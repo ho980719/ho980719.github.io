@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.main-bg {
+  height: 300px;
+  background-image: url('./assets/dogi2.png');
+  background-color: gray;
+  background-size: contain ;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +44,71 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.alertBox {
+  margin: 0px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100px;
+  background-color: beige;
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX( -50% );
+}
+
+.product-tab {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.product-tab a:link {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.product-info {
+  padding-top: 12px;
+  margin-top: 20px;
+  text-align: left;
+  height: 250px;
+  transition: 1s;
+}
+
+.container {
+  opacity: 1;
+  transition: 0.5s;
+}
+
+.op0 {
+  opacity: 0;
+}
+
+#alert-sale {
+}
+
+.box-qty {
+  display: flex;
+  justify-content: center;
+}
+.box-qty input {
+  width: 30px;
+  height: 25px;
+  text-align: center;
+  margin: 0 5px;
+}
+.btn-qty {
+  border: none;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+}
+
+th,td {
+  vertical-align:middle
 }
