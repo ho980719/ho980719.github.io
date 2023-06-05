@@ -25,8 +25,9 @@ const Cart = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {
-                    cartList.map(function (el, i) {
+                {   !cartList.length
+                    ? <tr><td colSpan={5}>담긴게 없네요..</td></tr>
+                    : cartList.map(function (el, i) {
                         return (
                             <tr key={el.id}>
                                 <th scope='row'><input type='checkbox'/></th>

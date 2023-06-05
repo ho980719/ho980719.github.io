@@ -1,11 +1,9 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit'
+import {useNavigate} from "react-router-dom";
 
 let cartList = createSlice({
     name: 'cartList',
-    initialState: [
-        {id: 1, pdtId: 0, name: 'White and Black', qty: 2, price: 10000, totalPrice: 20000},
-        {id: 2, pdtId: 2, name: 'Grey Yordan', qty: 1, price: 15000, totalPrice: 15000}
-    ],
+    initialState: [],
     reducers: {
         increaseQty(state, id) {
             state.find((x) => {
@@ -31,17 +29,20 @@ let cartList = createSlice({
             state.splice(i.payload, 1);
         },
         addCart(state, action) {
-            console.log(action.payload);
             let product = action.payload;
-            // 이미 같은 제품이 있는지 체크
-            let check = state.find((x)=>{
-                if (x.pdtId = product.id) {
-                    return false;
-                } else return true;
-            })
-            console.log(check)
-
-            // state.push(action.payload);
+            console.log(product)
+            // cartCheck ? 존재하니까 + 1 : 없어서 추가
+            if (product.cartCheck) {
+                // 동일 제품 존재시 수량 + 1
+                state.find((x) => {
+                    if (x.pdtId == product.id) {
+                        x.qty++
+                        x.totalPrice = x.qty * x.price
+                    }
+                })
+            } else {
+                state.push({id: state.length, pdtId: product.id, name: product.title, qty: 1, price: product.price, totalPrice: product.price});
+            }
         }
     }
 })

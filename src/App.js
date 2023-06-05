@@ -7,16 +7,26 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown'
-import Product from './Product.js'
+import Product, {findProductById} from './Product.js'
 import ProductDetail from './ProductDetail.js'
 import Card from 'react-bootstrap/Card';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import axios from 'axios'
 import Cart from './Cart.js'
+import product from "./Product.js";
 
 export let Context1 = createContext();
 
 function App() {
+    const localViewProducts = JSON.parse(localStorage.getItem('views'));
+    const viewProducts = [...localViewProducts].reverse();
+    useEffect(() => {
+        if (localViewProducts === null) {
+            localStorage.setItem('views', JSON.stringify([]));
+        }
+    }, [])
+    let obj = {name : 'kim'};
+
     let navigate = useNavigate();
     let [products, setProducts] = useState(Product())
     let [click, setClick] = useState(0);
@@ -73,7 +83,7 @@ function App() {
                     <Route path='/'
                            element={<ProductList products={products} navigate={navigate} clickCheck={clickCheck}/>}/>
                     <Route path={'/detail/:id'} element={
-                        <ProductDetail products={products}/>
+                        <ProductDetail products={products} navigate={navigate}/>
                     }/>
                     <Route path={'/cart'} element={<Cart/>}/>
                     <Route path='/event' element={
@@ -94,6 +104,23 @@ function App() {
                     }/>
                 </Routes>
             </div>
+            {
+                viewProducts &&
+                <div>
+                    <h1>최근본 상품</h1>
+                    <div className='view-products'>
+                        {
+                            viewProducts.map(function (el, i) {
+                                if (findProductById(el) !== undefined) {
+                                    return (
+                                        <img key={i} width={100} style={{margin:10}} src={findProductById(el).image} />
+                                    )
+                                }
+                            })
+                        }
+                    </div>
+                </div>
+            }
             {alertShow ? <AlertBox text='loading...'/> : null}
         </div>
     )
@@ -193,6 +220,8 @@ function ProductCard(props) {
         </div>
     )
 }
+
+
 
 const AlertBox = (props) => {
     return (

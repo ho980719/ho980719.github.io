@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import Nav from 'react-bootstrap/Nav';
 import {useDispatch, useSelector} from 'react-redux';
-import {addCart} from './store/cartSlice';
+import cartList, {addCart} from './store/cartSlice';
 // import styled from 'styled-components'
 
-const ProductDetail = props => {
+const ProductDetail = (props) => {
+    const {id} = useParams();
+    const product = props.products.find(el => el.id == id)
+
+    useEffect(() => {
+        // set views
+        let views = JSON.parse(localStorage.getItem('views'));
+        !views.includes(id) && views.push(id);
+        localStorage.setItem('views', JSON.stringify(views))
+    }, [])
+
     let cart = useSelector((state) => state.cartList);
 
     let dispatch = useDispatch();
@@ -41,9 +51,6 @@ const ProductDetail = props => {
         }
     }, [count])
 
-    const {id} = useParams()
-    const product = props.products.find(el => el.id == id)
-
     return (
         <>
             {alertShow ? (
@@ -70,7 +77,25 @@ const ProductDetail = props => {
                     <button
                         className='btn btn-outline-secondary' style={{margin: 15}}
                         onClick={() => {
-                            dispatch(addCart(product))
+                            // 이미 같은 제품이 있는지 체크
+                            let check = false;
+
+                            for(let p of cart) {
+                                if (p.pdtId == product.id) {
+                                    check = true;
+                                    break;
+                                }
+                            }
+                            product.cartCheck = check;
+                            if(check) {
+                                dispatch(addCart(product));
+                                if (window.confirm('이미 장바구니에 있으니까 수량을 추가했음둥 장바구니로 가쉴?')) {
+                                    props.navigate('/cart');
+                                }
+                            } else {
+                                dispatch(addCart(product));
+                                alert('없어서 장바구니에 추가했슴둥')
+                            }
                         }}
                     >
                         장바구니

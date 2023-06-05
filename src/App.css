@@ -112,3 +112,8 @@
 th,td {
   vertical-align:middle
 }
+
+.view-products {
+  width: 100%;
+  background-color: wheat;
+}

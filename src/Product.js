@@ -30,4 +30,15 @@ function Product() {
     return data;
 }
 
+export const findProductById = (id) => {
+    let products = Product();
+    let object = products.find((product) => {
+        if (product.id == id) {
+            return product
+        }
+    })
+
+    return object;
+}
+
 export default Product
