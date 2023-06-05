@@ -9,6 +9,7 @@ const ProductDetail = (props) => {
     const {id} = useParams();
     const product = props.products.find(el => el.id == id)
 
+    // 최근 본 상품
     useEffect(() => {
         // set views
         let views = JSON.parse(localStorage.getItem('views'));

@@ -13,7 +13,7 @@ import Card from 'react-bootstrap/Card';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
 import axios from 'axios'
 import Cart from './Cart.js'
-import product from "./Product.js";
+import {useQuery} from "react-query";
 
 export let Context1 = createContext();
 
@@ -21,18 +21,14 @@ function App() {
     const localViewProducts = JSON.parse(localStorage.getItem('views'));
     const viewProducts = [...localViewProducts].reverse();
     useEffect(() => {
-        if (localViewProducts === null) {
+        if (localViewProducts === null)
             localStorage.setItem('views', JSON.stringify([]));
-        }
     }, [])
-    let obj = {name : 'kim'};
 
     let navigate = useNavigate();
     let [products, setProducts] = useState(Product())
     let [click, setClick] = useState(0);
     let [alertShow, setAlertShow] = useState(false);
-
-    let [qty, setQty] = useState([10, 15, 13])
 
     const clickCheck = () => {
         return click < 2 ? <button style={{width: '50%', padding: 20, margin: 20}} type='button' onClick={() => {
@@ -72,11 +68,16 @@ function App() {
         }
     }, [click])
 
+    // useQuery
+    // RTK Query 유사 (React Tool Kit Query)
+    let result = useQuery('name', () => {
+        return axios.get('https://codingapple1.github.io/userdata.json').then((response) =>{return response.data})
+    })
+
+
     return (
         <div className='App'>
             <Header navigate={navigate}/>
-            <div>
-            </div>
             <Routes><Route path='/' element={<div className='main-bg'></div>}/></Routes>
             <div className='container' id='container'>
                 <Routes>
@@ -139,8 +140,7 @@ function Header({navigate}) {
                         height='auto'
                         className='d-inline-block align-top'
                         alt='React Bootstrap logo'
-                    />
-                    Dogi Shop1
+                    />Dogi Shop1
                 </Navbar.Brand>
                 <Nav.Link href='#deets' className='c'>Cart</Nav.Link>
                 <Nav.Link href='#deets'>Mypage</Nav.Link>
